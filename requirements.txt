@@ -1,0 +1,8 @@
+numpy
+pandas
+opencv
+PIL
+scipy
+skimage
+configparser
+tensorflow
