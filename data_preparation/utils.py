@@ -9,6 +9,7 @@ import shutil
 import os
 from os import remove
 from os import listdir
+import os.path
 from os.path import join
 from datetime import datetime
 from scipy.misc import imread, imresize
@@ -84,7 +85,8 @@ def discard_bad_images(dir_path, where_to_save_names, paths):
         try:
             image = Image.open(path)
             image.verify()
-            image = imread(path, mode='RGB')
+            image = imread(path)
+            # image = imread(path, mode='RGB')
         except Warning as warn:
             is_continue = True
             num_delete += 1
@@ -133,6 +135,11 @@ def discard_bad_images(dir_path, where_to_save_names, paths):
 
     print('\n>>>>> delete %d files! Current number of files: %d\n' % (num_delete, len(paths) - num_delete))
 
-    with open(os.path.join(where_to_save_names, 'corrupted_images.txt'), 'w') as f:
-        for item in path_delete:
-            f.write("%s\n" % item)
+    if os.path.isfile(os.path.join(where_to_save_names, 'corrupted_images.txt')):
+        with open(os.path.join(where_to_save_names, 'corrupted_images.txt'), 'a+') as f:
+            for item in path_delete:
+                f.write("%s\n" % item)
+    else:
+        with open(os.path.join(where_to_save_names, 'corrupted_images.txt'), 'a+') as f:
+            for item in path_delete:
+                f.write("%s\n" % item)
