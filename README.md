@@ -2,9 +2,9 @@
 
 ***Project consists of 2 parts:***
 
-* data preparation
+* [data preparation](https://github.com/lev1khachatryan/CityClassification/tree/master/data_preparation)
 
-* modeling
+* [modeling](https://github.com/lev1khachatryan/CityClassification/tree/master/src)
 
 ## 1. data preparation
 
