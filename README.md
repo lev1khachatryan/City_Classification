@@ -33,3 +33,24 @@ This is the [data_preparation/4_data_augmentation.py](https://github.com/lev1kha
 
 ## 2. modeling
 
+This part also consists of 4 sections.
+
+### 2.1 Base NN
+
+This is the main section of modeling. [src/models/BaseNN.py](https://github.com/lev1khachatryan/CityClassification/blob/master/src/models/BaseNN.py) is an abstract class responsible for ***network creation***, ***initialization***, ***training***, ***testing*** and ***saving*** to specified directory. It also contains ***network*** abstract method implemented in derived (child) class, which gives us high level of abstraction and ability to create different types of networks with a little code change.
+
+### 2.2 Specific Architectures
+
+These are derived classes from BaseNN. I use 2 architectures: [src/models/CNN.py](https://github.com/lev1khachatryan/CityClassification/blob/master/src/models/CNN.py) and [src/models/DNN.py](https://github.com/lev1khachatryan/CityClassification/blob/master/src/models/DNN.py). These classes are responsible for implementing abstract methods of BaseNN class, so they ***construct the network***, ***defines the metric***, ***attach summaries*** and ***load tensors***.
+
+### 2.3 Data loader
+
+This [src/data_loader.py](https://github.com/lev1khachatryan/CityClassification/blob/master/src/data_loader.py) class gives all required methods for train/test/validation data loading and additional information for network constructing.
+
+### 2.4 Starting points
+
+[src/mainCNN.py](https://github.com/lev1khachatryan/CityClassification/blob/master/src/mainCNN.py) and [src/mainDNN.py](https://github.com/lev1khachatryan/CityClassification/blob/master/src/mainDNN.py) are starting points for DNN and CNN respectively. They define ***flags*** for network and do train/test depending on flag.
+
+
+
+
