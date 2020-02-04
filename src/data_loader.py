@@ -7,7 +7,7 @@ import numpy as np
 class DataLoader:
 
     def __init__(self, train_images_dir, val_images_dir, test_images_dir, train_batch_size, val_batch_size, 
-            test_batch_size, height_of_image, width_of_image, num_channels, num_classes):
+    			 height_of_image, width_of_image, num_channels, num_classes):
 
         self.train_paths = glob.glob(os.path.join(train_images_dir, "**/*.*"), recursive=True)
         self.val_paths = glob.glob(os.path.join(val_images_dir, "**/*.*"), recursive=True)
@@ -19,7 +19,6 @@ class DataLoader:
 
         self.train_batch_size = train_batch_size
         self.val_batch_size = val_batch_size
-        self.test_batch_size = test_batch_size
 
         self.height_of_image = height_of_image
         self.width_of_image = width_of_image
@@ -28,11 +27,13 @@ class DataLoader:
 
     def load_image(self, path, is_flattened = False):
         im = np.asarray(Image.open(path).resize((self.width_of_image, self.height_of_image)))
-        # lbl = np.eye(self.num_classes)[int(path.rsplit('\\', 2)[-2])]
-        lbl = np.eye(self.num_classes)[int(path.rsplit('/', 2)[-2])]
+        if path.rsplit('\\', 2)[-2] == 'london':
+        	lbl = [1., 0.]
+        elif path.rsplit('\\', 2)[-2] == 'yerevan':
+        	lbl = [0., 1.]
 
         if is_flattened:
-            im = im.reshape(self.height_of_image * self.width_of_image)
+            im = im.reshape(self.height_of_image * self.width_of_image * self.num_channels)
 
         return im, lbl
 
@@ -49,21 +50,20 @@ class DataLoader:
             lbls.append(lbl)
             batch_size -= 1
             index += 1
-        imgs = np.array(ims)
-        imgs = imgs.reshape(-1, self.height_of_image, self.width_of_image, self.num_channels)
-
-        imgs = imgs / imgs.max()
+        imgs = ims
+        # imgs = np.array(ims)
+        # imgs = imgs.reshape(-1, self.height_of_image, self.width_of_image, self.num_channels)
+        # imgs = imgs - imgs.mean() / imgs.std()
 
         return imgs, np.array(lbls)
 
+    
     def train_data_loader(self, index, randomization = False):
         return self.batch_data_loader(self.train_batch_size, self.train_paths, index, randomization = randomization)
 
     def val_data_loader(self, index, randomization = False):
         return self.batch_data_loader(self.val_batch_size, self.val_paths, index, randomization = randomization)
-
-    def test_data_loader(self, index, randomization = False):
-        return self.batch_data_loader(self.test_batch_size, self.test_paths, index, randomization = randomization)
+    
     
     def get_train_data_size(self):
         return len(self.train_paths)
@@ -73,6 +73,7 @@ class DataLoader:
     
     def get_test_data_size(self):
         return len(self.test_paths)
+    
     
     def all_train_data_loader(self, is_flattened = False):
         return self.batch_data_loader(self.get_train_data_size(), self.train_paths, 0)
