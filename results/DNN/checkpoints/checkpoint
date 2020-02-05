@@ -1,0 +1,2 @@
+model_checkpoint_path: "C:\\_Files\\MyProjects\\CityClassification\\results\\DNN\\checkpoints\\DNN"
+all_model_checkpoint_paths: "C:\\_Files\\MyProjects\\CityClassification\\results\\DNN\\checkpoints\\DNN"
