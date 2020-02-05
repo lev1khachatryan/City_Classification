@@ -72,7 +72,7 @@ There are 2 networks: ***DNN*** and ***CNN***. To train CNN, specify correct fla
 
 Network trained with 10 epoch.
 
-Network graph
+Network
 :-------------------------:
 ![](assets/graphCNN.png)
 
@@ -85,7 +85,9 @@ Accuracy                   |  Loss
 
 Network trained with 10 epoch.
 
-Network graph
+***Note:*** 1 layered DNN is just ***Logistic Regression***.
+
+Network
 :-------------------------:
 ![](assets/graphDNN.png)
 
@@ -94,10 +96,14 @@ Accuracy                   |  Loss
 ![](assets/accuracyDNN.png)|  ![](assets/lossDNN.png)
 
 
+### Inference
+
+To make inference with CNN, in [src/mainCNN.py](https://github.com/lev1khachatryan/CityClassification/blob/master/src/mainCNN.py) file, set train flag to ***False*** and run `python mainCNN.py`. In case of DNN, you have to do the same thing for [src/mainDNN.py](https://github.com/lev1khachatryan/CityClassification/blob/master/src/mainDNN.py) file and run `python mainDNN.py`. Results will be stored in [inference_CNN/inference.txt](https://github.com/lev1khachatryan/CityClassification/blob/master/inference_CNN/inference.txt) and [inference_DNN/inference.txt](https://github.com/lev1khachatryan/CityClassification/blob/master/inference_DNN/inference.txt) files respectively. CNN makes ***100 %*** accuracy on test set, DNN makes ***29 %*** accuracy (perhaps 10 epochs is not enough).
+
 
 ## Problems of dataset
 
-
+146 images (by the way 1 of them is corrupted) are not enough for training (SVM might work better than DNN because of training size). Besides that the training size is small, Images are very similar to each other. 
 
 
 ## My Running Environment
