@@ -82,4 +82,11 @@ class DataLoader:
         return self.batch_data_loader(self.get_val_data_size(), self.val_paths, 0)
     
     def all_test_data_loader(self, is_flattened = False):
-        return self.batch_data_loader(self.get_test_data_size(), self.test_paths, 0)
+        ims = []
+        for index in range(len(self.test_paths)):
+            im = np.asarray(Image.open(self.test_paths[index]).resize((self.width_of_image, self.height_of_image)))
+            if is_flattened:
+                im = im.reshape(self.height_of_image * self.width_of_image * self.num_channels)
+            ims.append(im)
+
+        return ims
