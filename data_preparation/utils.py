@@ -135,11 +135,6 @@ def discard_bad_images(dir_path, where_to_save_names, paths):
 
     print('\n>>>>> delete %d files! Current number of files: %d\n' % (num_delete, len(paths) - num_delete))
 
-    if os.path.isfile(os.path.join(where_to_save_names, 'corrupted_images.txt')):
-        with open(os.path.join(where_to_save_names, 'corrupted_images.txt'), 'a+') as f:
-            for item in path_delete:
-                f.write("%s\n" % item)
-    else:
-        with open(os.path.join(where_to_save_names, 'corrupted_images.txt'), 'a+') as f:
-            for item in path_delete:
-                f.write("%s\n" % item)
+    with open(os.path.join(where_to_save_names, 'corrupted_images.txt'), 'a+') as f:
+        for item in path_delete:
+            f.write("%s\n" % item)
