@@ -175,19 +175,3 @@ class DNN(BaseNN):
         self.z_pred_tf = tf.add(tf.matmul(self.h_fc2_drop_tf, self.W_fc3_tf), self.b_fc3_tf, name = 'z_pred_tf')# => (.,2)
 
         return self.z_pred_tf
-
-    def metrics(self, Y, Y_pred):
-        """
-        Some metric, here I use simple accuracy
-        -----------------
-        Parameters:
-            Y       (array_like) - actual labels
-            Y_pred  (array_like) - predicted labels
-        Returns:
-            Float (Accuracy)
-        -----------------
-        """
-
-        Y = Y.reshape(-1,)
-        Y_pred = Y_pred.reshape(-1,)
-        return np.mean(Y == Y_pred)
