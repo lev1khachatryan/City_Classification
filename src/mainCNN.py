@@ -10,7 +10,7 @@ tf.app.flags.DEFINE_string('val_images_dir', 'C:\\_Files\\MyProjects\\CityClassi
 tf.app.flags.DEFINE_string('test_images_dir', 'C:\\_Files\\MyProjects\\CityClassification\\data\\test\\', 'Testing images data directory.')
 
 tf.app.flags.DEFINE_boolean('train', True, 'whether to train the network')
-tf.app.flags.DEFINE_integer('num_epochs', 50, 'epochs to train')
+tf.app.flags.DEFINE_integer('num_epochs', 10, 'epochs to train')
 tf.app.flags.DEFINE_integer('train_batch_size', 8, 'number of elements in a training batch')
 tf.app.flags.DEFINE_integer('val_batch_size', 8, 'number of elements in a validation batch')
 
