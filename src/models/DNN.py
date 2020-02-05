@@ -2,11 +2,11 @@ from .BaseNN import *
 
 class DNN(BaseNN):
 
-    def __init__(self, train_images_dir, val_images_dir, test_images_dir, num_epochs, train_batch_size,
+    def __init__(self, train_images_dir, val_images_dir, test_images_dir, inference_dir, num_epochs, train_batch_size,
                  val_batch_size, height_of_image, width_of_image, num_channels, 
                  num_classes, learning_rate, base_dir, max_to_keep, model_name, keep_prob):
 
-        super().__init__(train_images_dir, val_images_dir, test_images_dir, num_epochs, train_batch_size,
+        super().__init__(train_images_dir, val_images_dir, test_images_dir, inference_dir, num_epochs, train_batch_size,
                  val_batch_size, height_of_image, width_of_image, num_channels, 
                  num_classes, learning_rate, base_dir, max_to_keep, model_name, keep_prob)
 

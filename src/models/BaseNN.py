@@ -7,15 +7,17 @@ import pandas as pd
 import os;
 import datetime  
 import cv2
+import os
 
 class BaseNN:
-    def __init__(self, train_images_dir, val_images_dir, test_images_dir, num_epochs, train_batch_size,
+    def __init__(self, train_images_dir, val_images_dir, test_images_dir, inference_dir, num_epochs, train_batch_size,
                  val_batch_size, height_of_image, width_of_image, num_channels, 
                  num_classes, learning_rate, base_dir, max_to_keep, model_name, keep_prob):
 
         self.data_loader = DataLoader(train_images_dir, val_images_dir, test_images_dir, train_batch_size, 
                 val_batch_size, height_of_image, width_of_image, num_channels, num_classes)
 
+        self.inference_dir = inference_dir
         self.num_epochs = num_epochs
         self.learning_rate = learning_rate
         self.base_dir = base_dir
@@ -101,7 +103,6 @@ class BaseNN:
             None
         -----------------
         """
-        # filepath = os.path.join(os.getcwd(), self.base_dir, self.model_name, 'checkpoints', self.model_name)
         filepath = os.path.join(self.base_dir, self.model_name, 'checkpoints', self.model_name)
         self.saver_tf.save(sess, filepath)
         
@@ -286,13 +287,10 @@ class BaseNN:
         """
         tf.reset_default_graph()
 
-        # filepath = os.path.join(os.getcwd(), filename + '.meta')
-        # filepath = os.path.join(os.getcwd(), self.base_dir, filename + '.meta')
-        # filepath = os.path.join(os.getcwd(), self.base_dir, self.model_name, filename + '.meta')
         filepath = os.path.join(self.base_dir, self.model_name, 'checkpoints', filename + '.meta')
         saver = tf.train.import_meta_graph(filepath)
         sess = tf.Session()
-        saver.restore(sess, self.model_name)
+        saver.restore(sess, os.path.join(self.base_dir, self.model_name, 'checkpoints', filename))
         graph = tf.get_default_graph()
         
         self.load_tensors(graph)
@@ -309,7 +307,7 @@ class BaseNN:
             metric, defined in dnn class (for example accuracy)
         -----------------
         """
-        x_test, y_test = self.data_loader.all_test_data_loader()
+        x_test = self.data_loader.all_test_data_loader()
 
         sess = self.load_session_from_file(self.model_name)
         
@@ -320,10 +318,20 @@ class BaseNN:
         sess.close()
         
         y_test_pred_labels[self.model_name] = one_hot_to_dense(y_test_pred[self.model_name])
-        y_test = one_hot_to_dense(y_test)
-        
-        print('Test Accuracy: ', self.metrics(y_test, y_test_pred_labels[self.model_name]))
-        return self.metrics(y_test, y_test_pred_labels[self.model_name])
+
+        lbls = []
+        for val in y_test_pred_labels[self.model_name]:
+            if val == 0:
+                lbls.append('london')
+            elif val == 1:
+                lbls.append('Yerevan')
+
+        if not os.path.exists(self.inference_dir):
+            os.mkdir(self.inference_dir)
+        with open(os.path.join(self.inference_dir, 'inference.txt'), 'a+') as f:
+            for idx in range(self.data_loader.get_test_data_size()):
+                f.write("%s    :    " % self.data_loader.test_paths[idx])
+                f.write("%s\n" % lbls[idx])
 
     def initialize_network(self):
         """
@@ -336,8 +344,6 @@ class BaseNN:
         -----------------
         """
         self.sess = tf.InteractiveSession()
-        # filepath = os.path.join(os.getcwd(), self.base_dir, self.model_name, 'checkpoints', self.model_name + '.meta')
-        # filepath = os.path.join(os.getcwd(), self.model_name + '.meta')
         filepath = os.path.join(self.base_dir, self.model_name, 'checkpoints', self.model_name + '.meta')
         if os.path.isfile(filepath) == False:
             self.sess.run(tf.global_variables_initializer())
@@ -348,10 +354,6 @@ class BaseNN:
     @abstractmethod
     def network(self, X):
         raise NotImplementedError('subclasses must override network()!')
-
-    @abstractmethod
-    def metrics(self, Y, y_pred):
-        raise NotImplementedError('subclasses must override metrics()!')
 
     @abstractmethod
     def load_tensors(self, graph):

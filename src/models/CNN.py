@@ -2,11 +2,11 @@ from .BaseNN import *
 
 class CNN(BaseNN):
 
-    def __init__(self, train_images_dir, val_images_dir, test_images_dir, num_epochs, train_batch_size,
+    def __init__(self, train_images_dir, val_images_dir, test_images_dir, inference_dir, num_epochs, train_batch_size,
                  val_batch_size, height_of_image, width_of_image, num_channels, 
                  num_classes, learning_rate, base_dir, max_to_keep, model_name, keep_prob):
 
-        super().__init__(train_images_dir, val_images_dir, test_images_dir, num_epochs, train_batch_size,
+        super().__init__(train_images_dir, val_images_dir, test_images_dir, inference_dir, num_epochs, train_batch_size,
                  val_batch_size, height_of_image, width_of_image, num_channels, 
                  num_classes, learning_rate, base_dir, max_to_keep, model_name, keep_prob)
 
@@ -122,7 +122,6 @@ class CNN(BaseNN):
         self.h_pool1_tf = graph.get_tensor_by_name('h_pool1_tf:0')
         self.h_conv2_tf = graph.get_tensor_by_name('h_conv2_tf:0')
         self.h_pool2_tf = graph.get_tensor_by_name('h_pool2_tf:0')
-        self.h_conv3_tf = graph.get_tensor_by_name('h_conv3_tf:0')
         self.h_fc1_tf = graph.get_tensor_by_name('h_fc1_tf:0')
         self.z_pred_tf = graph.get_tensor_by_name('z_pred_tf:0')
         
@@ -170,7 +169,6 @@ class CNN(BaseNN):
 
         # initialize summary writer 
         timestamp = datetime.datetime.now().strftime('%d-%m-%Y_%H-%M-%S')
-        # filepath = os.path.join(os.getcwd(), self.base_dir, self.model_name, 'logs', (self.model_name+'_'+timestamp))
         filepath = os.path.join(self.base_dir, self.model_name, 'logs', (self.model_name+'_'+timestamp))
         self.train_writer = tf.summary.FileWriter(os.path.join(filepath,'train'), sess.graph)
         self.valid_writer = tf.summary.FileWriter(os.path.join(filepath,'valid'), sess.graph)
@@ -217,19 +215,3 @@ class CNN(BaseNN):
         self.z_pred_tf = tf.add(tf.matmul(self.h_fc1_drop_tf, self.W_fc2_tf), self.b_fc2_tf, name = 'z_pred_tf')# => (.,2)
 
         return self.z_pred_tf
-
-    def metrics(self, Y, Y_pred):
-        """
-        Some metric, here I use simple accuracy
-        -----------------
-        Parameters:
-            Y       (array_like) - actual labels
-            Y_pred  (array_like) - predicted labels
-        Returns:
-            Float (Accuracy)
-        -----------------
-        """
-
-        Y = Y.reshape(-1,)
-        Y_pred = Y_pred.reshape(-1,)
-        return np.mean(Y == Y_pred)
