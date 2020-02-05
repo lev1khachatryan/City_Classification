@@ -9,8 +9,10 @@ tf.app.flags.DEFINE_string('train_images_dir', 'C:\\_Files\\MyProjects\\CityClas
 tf.app.flags.DEFINE_string('val_images_dir', 'C:\\_Files\\MyProjects\\CityClassification\\data\\validation\\', 'Validation images data directory.')
 tf.app.flags.DEFINE_string('test_images_dir', 'C:\\_Files\\MyProjects\\CityClassification\\data\\test\\', 'Testing images data directory.')
 
-tf.app.flags.DEFINE_boolean('train', True, 'whether to train the network')
-tf.app.flags.DEFINE_integer('num_epochs', 2, 'epochs to train')
+tf.app.flags.DEFINE_string('inference_dir', 'C:\\_Files\\MyProjects\\CityClassification\\inference_DNN', 'Directory where to save inference result.')
+
+tf.app.flags.DEFINE_boolean('train', False, 'whether to train the network')
+tf.app.flags.DEFINE_integer('num_epochs', 10, 'epochs to train')
 tf.app.flags.DEFINE_integer('train_batch_size', 8, 'number of elements in a training batch')
 tf.app.flags.DEFINE_integer('val_batch_size', 8, 'number of elements in a validation batch')
 
@@ -41,6 +43,7 @@ def main(argv=None):
         train_images_dir=FLAGS.train_images_dir,
         val_images_dir=FLAGS.val_images_dir,
         test_images_dir=FLAGS.test_images_dir,
+        inference_dir = FLAGS.inference_dir,
         num_epochs=FLAGS.num_epochs,
         train_batch_size=FLAGS.train_batch_size,
         val_batch_size=FLAGS.val_batch_size,
