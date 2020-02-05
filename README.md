@@ -56,12 +56,65 @@ This [src/data_loader.py](https://github.com/lev1khachatryan/CityClassification/
 
 Make sure you have installed [python 3](https://www.python.org/download/releases/3.0/) and all [required](https://github.com/lev1khachatryan/CityClassification/blob/master/requirements.txt) libraries.To install needed libraries just run `pip install -r requirements.txt`. If you will be using docker then run `docker build -t city_classification_image .` (image size is 2.46 GB).
 
+To download dataset, you can use [datasetDownloader.sh](https://github.com/lev1khachatryan/CityClassification/blob/master/datasetDownloader.sh) shell script, but at first set correct path in wget.
+
 ### Preprocessing
 
 To preprocess the data, put data folder to root directory (replace it with [existing](https://github.com/lev1khachatryan/CityClassification/tree/master/data) folder), go to [data_preparation](https://github.com/lev1khachatryan/CityClassification/tree/master/data_preparation) and specify correct parameters to [data_preparation/config/INI](https://github.com/lev1khachatryan/CityClassification/blob/master/data_preparation/config.INI) file.
 
 Now you can run data preparation scripts. To train data preprocessing just run `python 1_train_preprocessor.py`. Test data preprocessing: `python 2_test_preprocessor.py`. Validation set extraction from train set: `python 3_validation_split.py` and for data augmentation `python 4_data_augmentation.py`. 
 
+### Training
+
+There are 2 networks: ***DNN*** and ***CNN***. To train CNN, specify correct flags to [src/mainCNN.py](https://github.com/lev1khachatryan/CityClassification/blob/master/src/mainCNN.py) (notice that you have to set train flag True which defines whether to train the network or make inference) and run `python mainCNN.py`. To train DNN, specify correct flags to [src/mainDNN.py](https://github.com/lev1khachatryan/CityClassification/blob/master/src/mainDNN.py) file and run `python mainDNN.py`.
+
+#### CNN
+
+Network trained with 10 epoch.
+
+Network graph
+:-------------------------:
+![](assets/graphCNN.png)
+
+Accuracy                   |  Loss
+:-------------------------:|:-------------------------:
+![](assets/accuracyCNN.png)|  ![](assets/lossCNN.png)
+
+
+#### DNN
+
+Network trained with 10 epoch.
+
+Network graph
+:-------------------------:
+![](assets/graphDNN.png)
+
+Accuracy                   |  Loss
+:-------------------------:|:-------------------------:
+![](assets/accuracyDNN.png)|  ![](assets/lossDNN.png)
 
 
 
+## Problems of dataset
+
+
+
+
+## My Running Environment
+
+### Hardware
+
+* CPU: Intel® Core™ i5-8250U (1.60GHz x 8 cores, 16 threads)
+
+* GPU: NVIDIA® GeForce GTX 1080/PCle/SSE2
+
+* Memory: 8GB GiB
+
+* OS type: 64-bit
+
+* Disk: 1.2 TB
+
+
+### Operating System
+
+Windows 10
